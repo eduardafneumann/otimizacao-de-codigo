@@ -1,0 +1,105 @@
+\DTLloaddb[]{results}{data/experiment_results.csv}
+\newpage{}
+
+\section{Resultados dos experimentos}
+
+Para cada experimento, ao final das 10 repetições obteve-se a média dos valores dos eventos observados, além da média e desvio padrão do tempo de execução. Os valores são apresentados abaixo.
+
+\subsection{Experimento 1}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+    \hline \textbf{Evento observado} & \textbf{Média obtida} \\
+    \hline L1-dcache-loads & \DTLfetch{results}{executable}{static_no}{L1-dcache-loads} \\
+    \hline L1-dcache-loads-misses & \DTLfetch{results}{executable}{static_no}{L1-dcache-loads-misses} \\
+    \hline branch-instructions & \DTLfetch{results}{executable}{static_no}{branch-instructions} \\
+    \hline branch-misses & \DTLfetch{results}{executable}{static_no}{branch-misses} \\
+    \hline
+\end{tabular}
+\end{table}
+
+Tempo médio de \DTLfetch{results}{executable}{static_no}{mean-time}s com desvio padrão de \DTLfetch{results}{executable}{static_no}{stddv-time}s. Portanto, o intervalo de confiança com 95\% de certeza para o tempo é (\DTLfetch{results}{executable}{static_no}{confidence-interval-start}, \DTLfetch{results}{executable}{static_no}{confidence-interval-end}), em segundos.
+
+\subsection{Experimento 2}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+    \hline \textbf{Evento observado} & \textbf{Média obtida} \\
+    \hline L1-dcache-loads & \DTLfetch{results}{executable}{dynamic_no}{L1-dcache-loads} \\
+    \hline L1-dcache-loads-misses & \DTLfetch{results}{executable}{dynamic_no}{L1-dcache-loads-misses} \\
+    \hline branch-instructions & \DTLfetch{results}{executable}{dynamic_no}{branch-instructions} \\
+    \hline branch-misses & \DTLfetch{results}{executable}{dynamic_no}{branch-misses} \\
+    \hline
+\end{tabular}
+\end{table}
+
+Tempo médio de \DTLfetch{results}{executable}{dynamic_no}{mean-time}s com desvio padrão de \DTLfetch{results}{executable}{dynamic_no}{stddv-time}s. Portanto, o intervalo de confiança com 95\% de certeza para o tempo é (\DTLfetch{results}{executable}{dynamic_no}{confidence-interval-start}, \DTLfetch{results}{executable}{dynamic_no}{confidence-interval-end}), em segundos.
+
+\subsection{Experimento 3}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+    \hline \textbf{Evento observado} & \textbf{Média obtida} \\
+    \hline L1-dcache-loads & \DTLfetch{results}{executable}{static_li}{L1-dcache-loads} \\
+    \hline L1-dcache-loads-misses & \DTLfetch{results}{executable}{static_li}{L1-dcache-loads-misses} \\
+    \hline branch-instructions & \DTLfetch{results}{executable}{static_li}{branch-instructions} \\
+    \hline branch-misses & \DTLfetch{results}{executable}{static_li}{branch-misses} \\
+    \hline
+\end{tabular}
+\end{table}
+
+Tempo médio de \DTLfetch{results}{executable}{static_li}{mean-time}s com desvio padrão de \DTLfetch{results}{executable}{static_li}{stddv-time}s. Portanto, o intervalo de confiança com 95\% de certeza para o tempo é (\DTLfetch{results}{executable}{static_li}{confidence-interval-start}, \DTLfetch{results}{executable}{static_li}{confidence-interval-end}), em segundos.
+
+
+\subsection{Experimento 4}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+    \hline \textbf{Evento observado} & \textbf{Média obtida} \\
+    \hline L1-dcache-loads & \DTLfetch{results}{executable}{dynamic_li}{L1-dcache-loads} \\
+    \hline L1-dcache-loads-misses & \DTLfetch{results}{executable}{dynamic_li}{L1-dcache-loads-misses} \\
+    \hline branch-instructions & \DTLfetch{results}{executable}{dynamic_li}{branch-instructions} \\
+    \hline branch-misses & \DTLfetch{results}{executable}{dynamic_li}{branch-misses} \\
+    \hline
+\end{tabular}
+\end{table}
+
+Tempo médio de \DTLfetch{results}{executable}{dynamic_li}{mean-time}s com desvio padrão de \DTLfetch{results}{executable}{dynamic_li}{stddv-time}s. Portanto, o intervalo de confiança com 95\% de certeza para o tempo é (\DTLfetch{results}{executable}{dynamic_li}{confidence-interval-start}, \DTLfetch{results}{executable}{dynamic_li}{confidence-interval-end}), em segundos.
+
+\subsection{Experimento 5}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+    \hline \textbf{Evento observado} & \textbf{Média obtida} \\
+    \hline L1-dcache-loads & \DTLfetch{results}{executable}{static_lu}{L1-dcache-loads} \\
+    \hline L1-dcache-loads-misses & \DTLfetch{results}{executable}{static_lu}{L1-dcache-loads-misses} \\
+    \hline branch-instructions & \DTLfetch{results}{executable}{static_lu}{branch-instructions} \\
+    \hline branch-misses & \DTLfetch{results}{executable}{static_lu}{branch-misses} \\
+    \hline
+\end{tabular}
+\end{table}
+
+Tempo médio de \DTLfetch{results}{executable}{static_lu}{mean-time}s com desvio padrão de \DTLfetch{results}{executable}{static_lu}{stddv-time}s. Portanto, o intervalo de confiança com 95\% de certeza para o tempo é (\DTLfetch{results}{executable}{static_lu}{confidence-interval-start}, \DTLfetch{results}{executable}{static_lu}{confidence-interval-end}), em segundos.
+
+\subsection{Experimento 6}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+    \hline \textbf{Evento observado} & \textbf{Média obtida} \\
+    \hline L1-dcache-loads & \DTLfetch{results}{executable}{dynamic_lu}{L1-dcache-loads} \\
+    \hline L1-dcache-loads-misses & \DTLfetch{results}{executable}{dynamic_lu}{L1-dcache-loads-misses} \\
+    \hline branch-instructions & \DTLfetch{results}{executable}{dynamic_lu}{branch-instructions} \\
+    \hline branch-misses & \DTLfetch{results}{executable}{dynamic_lu}{branch-misses} \\
+    \hline
+\end{tabular}
+\end{table}
+
+Tempo médio de \DTLfetch{results}{executable}{dynamic_lu}{mean-time}s com desvio padrão de \DTLfetch{results}{executable}{dynamic_lu}{stddv-time}s. Portanto, o intervalo de confiança com 95\% de certeza para o tempo é (\DTLfetch{results}{executable}{dynamic_lu}{confidence-interval-start}, \DTLfetch{results}{executable}{dynamic_lu}{confidence-interval-end}), em segundos.
+
+

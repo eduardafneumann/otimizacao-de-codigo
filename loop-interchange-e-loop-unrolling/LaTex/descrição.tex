@@ -1,0 +1,276 @@
+\section{Descrição da atividade}
+
+A implementação da multiplicação de matrizes quadradas de dimensão 500 foi implementada de 6 maneiras distintas, utilzando alocação estática ou dinâmica e otimizações de \textit{loop interchange}, \textit{loop unrolling} ou sem otimizações.
+
+
+
+\begin{figure}[!h]
+ \begin{minipage}{0.5\textwidth}
+  \centering
+  \begin{minted}[fontsize=\footnotesize]{c}
+int main()
+{
+  int a[n * n];
+  int b[n * n];
+  int c[n * n];
+  multiplyNo(c, a, b);
+}
+
+
+
+  \end{minted}
+  \captionof*{listing}{\small Implementação estática}
+ \end{minipage}
+ \begin{minipage}{0.5\textwidth}
+  \centering
+  \begin{minted}[fontsize=\footnotesize]{c}
+int main()
+{
+    int *a = malloc(sizeof(int) * n * n);
+    int *b = malloc(sizeof(int) * n * n);
+    int *c = malloc(sizeof(int) * n * n);
+    multiplyNo(c, a, b);
+    free(a);
+    free(b);
+    free(c);
+}
+  \end{minted}
+  \captionof{listing}*{\small Implementação dinâmica}
+ \end{minipage}
+ % \captionof{listing}{SomeCaption}
+  \label{lst:representation_examples}
+\end{figure}
+
+
+\begin{figure}[H]
+ \begin{minipage}{0.5\textwidth}
+  \centering
+  \begin{minted}[fontsize=\footnotesize]{c}
+void multiplyNo(int *c, const int *a, 
+                const int *b)
+{
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++){
+      for (int k = 0; k < n; k++){
+        c[i*n+j]=a[i*n+k]*b[k*n+j];
+      }
+    }
+  }
+}
+
+  \end{minted}
+  \captionof*{listing}{\small Multiplicação não otimizada}
+ \end{minipage}
+ \begin{minipage}{0.5\textwidth}
+  \centering
+  \begin{minted}[fontsize=\footnotesize]{c}
+void multiplyLi(int *c, const int *a, 
+                const int *b)
+{
+  for (int i = 0; i < n; i++){
+    for (int k = 0; k < n; k++){
+      for (int j = 0; j < n; j++){
+        c[i*n+j]=a[i*n+k]*b[k*n+j];
+      }
+    }
+  }
+}
+
+  \end{minted}
+  \captionof{listing}*{\small \textit{loop interchange}}
+ \end{minipage}
+ % \captionof{listing}{SomeCaption}
+  \label{lst:representation_examples}
+\end{figure}
+
+\begin{figure}[H]
+\begin{minted}[fontsize=\footnotesize]{c}
+void multiplyLu(int *c, const int *a, const int *b)
+{
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            int k;
+            for (k = 0; k < n / 10;){
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+                k++;
+            }
+            for (; k < n; k++){
+                c[i * n + j] = a[i * n + k] * b[k * n + j];
+            }
+        }
+    }
+}
+\end{minted}
+\captionof{listing}*{\small \textit{loop unrolling}}
+\end{figure}
+Cada experimento realizado é detalhado na tabela abaixo.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+    \hline \textbf{Experimento} & \textbf{Alocação} & \textbf{Otimização} & \textbf{Arquivo implementado} \\
+    \hline 1 & Estática & None & \texttt{static-no.c} \\
+    \hline 2 & Dinâmica & None & \texttt{dynamic-no.c} \\
+    \hline 3 & Estática & \textit{loop interchange} & \texttt{static-li.c} \\
+    \hline 4 & Dinâmica & \textit{loop interchange} & \texttt{dynamic-li.c} \\
+    \hline 5 & Estática & \textit{loop unrolling} & \texttt{static-lu.c} \\
+    \hline 6 & Dinâmica & \textit{loop unrolling} & \texttt{dynamic-lu.c} \\
+    \hline
+\end{tabular}
+\end{table}
+    
+
+Os testes foram realizados com o comando \texttt{perf stat} utilizando a flag \texttt{-r} para que cada teste fosse executado diversas vezes, \texttt{-e} para coletar informações sobre os eventos desejados e \texttt{-o} para armazenar os resultados no arquivo informado. Dessa forma, o comando abaixo foi usada para executar o teste com alocação estática e \textit{loop interchange}, por exemplo.
+
+\begin{minted}{shell}
+perf stat -r 10  -o ../perf-out/static-li.txt -e L1-dcache-loads,
+L1-dcache-load-misses,branch-instructions,branch-misses
+../bin/static-li
+\end{minted}
+
+O script \texttt{make\_csv.py} foi usado para processar as saídas geradas e compilar as informações dos testes no arquivo \texttt{experiment\_results.csv}.
+
+Os intervalos de confiança do tempo foram calculados com o script \texttt{calculate} \texttt{\_confidence\_intervals.py}, utilizando a bilbioteca \texttt{scipy.stats}. Assumiu-se que o tempo segue a distribuição \textit{t-sudent} e utilizou-se um p-valor de 5\%. O erro padrão da média (SEM) de cada experimento foi calculado com base no desvio padrão ($\sigma$) informado pelo comando \texttt{perf stat} e pela quantidade de medidas tomadas (n), nesse caso 10, por meio da fórmula $SEM = \sigma / \sqrt{n}$. Os resultados foram registrados no arquivo \texttt{experiment\_results.csv}.
+
+\begin{minted}{python}
+static_no_sem = static_no_stddev / np.sqrt(len)
+st.t.interval(confidence=0.95, df=len-1, loc=static_no_mean, 
+              scale=static_no_sem)
+\end{minted}
+
+A influência dos fatores foram calculadas com o script \texttt{calculate\_factors\_} \texttt{influence.r}, desenvolvido com base no script disponíbilizado, e o resultado foi salvo no arquivo \texttt{factors\_influence.csv}. Foram realizadas 4 análises, todas do tipo 2 fatorial completo, descritas na tabela abaixo.  
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+    \hline Análise & \multicolumn{2}{c|}{\textbf{Nível alocação}} & \multicolumn{2}{c|}{\textbf{Nível otimização}} & \textbf{Variável resposta} \\
+    \hline \textbf{1} & Estática & Dinâmica & None & \textit{interchange} & L1-dcache-loads \\
+    \hline \textbf{2} & Estática & Dinâmica & None & \textit{interchange} & L1-dcache-loads-misses \\
+    \hline \textbf{3} & Estática & Dinâmica & None & \textit{unrolling} & branch-instructions \\
+    \hline \textbf{4} & Estática & Dinâmica & None & \textit{unrolling} & branch-misses \\
+    \hline
+\end{tabular}
+\end{table}
+    
+% A multiplicação de matrizes foi implementada sem otimizações, utilizando \textit{loop unrolling} e \textit{loop interchange}. O tamanho das matrizes utilizadas durantes os testes foi de 500 x 500.
+
+% \begin{minted}{c}
+% void multiplyNo(int *c, const int *a, const int *b) {
+%   for (int i = 0; i < n; i++) {
+%     for (int j = 0; j < n; j++) {
+%       for (int k = 0; k < n; k++) {
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%       }
+%     }
+%   }
+% }
+% \end{minted}
+
+% \begin{minted}{c}
+% void multiplyLu(int *c, const int *a, const int *b) {
+%   for (int i = 0; i < n; i++) {
+%     for (int j = 0; j < n; j++) {
+%       int k;
+%       for (k = 0; k < n / 10;) {
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%         k++;
+%       }
+%       for (; k < n; k++) {
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%       }
+%     }
+%   }
+% }
+% \end{minted}
+
+% \begin{minted}{c}
+% void multiplyLi(int *c, const int *a, const int *b) {
+%   for (int i = 0; i < n; i++) {
+%     for (int k = 0; k < n; k++) {
+%       for (int j = 0; j < n; j++) {
+%         c[i * n + j] = a[i * n + k] * b[k * n + j];
+%       }
+%     }
+%   }
+% }
+% \end{minted}
+
+% Também, a alocação da memória para as matrizes foi implementada estaticamente e dinamicamente, nos arquivos \texttt{static.c} e \texttt{dynamic.c}.
+
+% \begin{minted}{c}
+% int main()
+% {
+%   int a[n * n];
+%   int b[n * n];
+%   int c[n * n];
+%   multiplyNo(c, a, b);
+% }
+% \end{minted}
+
+% \begin{minted}{c}
+% int main()
+% {
+%     int *a = malloc(sizeof(int) * n * n);
+%     int *b = malloc(sizeof(int) * n * n);
+%     int *c = malloc(sizeof(int) * n * n);
+%     multiplyNo(c, a, b);
+%     free(a);
+%     free(b);
+%     free(c);
+% }
+% \end{minted}
+
+% O arquivo \texttt{static.c} foi compilado para \texttt{static-no}, \texttt{static-lu} e \texttt{static-li}, utilizando as diferentes estratégias de multiplicação de matrizes. Analogamente para o arquivo \texttt{dynamic.c}. Os experimentos foram realizados utilizando o comando abaixo para multiplicação de uma matriz estática utilizando a otimização \textit{loop interchange}, por exemplo.
+
+% \begin{minted}{shell}
+% perf stat -r 20 -e L1-dcache-loads,L1-dcache-load-misses,
+% branch-instructions,branch-misses ./static-li
+% \end{minted}
+
+% Desse modo, temos 6 experimentos, onde cada um deve ser repetido 10 vezes, a saber: 
+
+% \begin{itemize}
+% \item Sem otimização com alocação estática
+% \item Sem otimização com alocação dinâmica
+% \item Loop Interchange com alocação estática
+% \item Loop Interchange com alocação dinâmica
+% \item Loop Unrolling com alocação estática
+% \item Loop Unrolling com alocação dinâmica
+% \end{itemize}
+ 

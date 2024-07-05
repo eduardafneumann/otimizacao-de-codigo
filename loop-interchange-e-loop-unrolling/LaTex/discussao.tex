@@ -1,0 +1,51 @@
+\newpage
+\section{Discussão dos Resultados}
+\subsection{Comparação do tempo}
+% Para o caso da alocação estática podemos observar que o tempo foi diminuído no caso do uso da técnica de otimização do \textit{loop interchange}, e um ligeiro aumento no uso da técnica de \textit{loop unrolling}.
+
+% Para a alocação dinâmica houve uma diminuição no tempo em ambas as técnicas de otimização, embora muito mais acentuado com o uso de \textit{loop interchange}.
+
+Observa-se que o tempo de execução é consideravelmente menor nos experimentos 3 e 4, com otimização \textit{loop interchange}. Fixando os níveis do fator otimização, não há um impacto perceptível causado no tempo pelo fator alocação.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+    \hline \textbf{Experimento} & \textbf{Média do tempo (s)} & \textbf{Intervalo de confiança (s)}\\ 
+    \hline 1 & \DTLfetch{results}{executable}{static_no}{mean-time} & (\DTLfetch{results}{executable}{static_no}{confidence-interval-start}, \DTLfetch{results}{executable}{static_no}{confidence-interval-end}) \\
+    \hline 2 & \DTLfetch{results}{executable}{dynamic_no}{mean-time} & (\DTLfetch{results}{executable}{dynamic_no}{confidence-interval-start}, \DTLfetch{results}{executable}{dynamic_no}{confidence-interval-end})\\
+    
+    \hline 3 & \DTLfetch{results}{executable}{static_li}{mean-time} & (\DTLfetch{results}{executable}{static_li}{confidence-interval-start}, \DTLfetch{results}{executable}{static_li}{confidence-interval-end}) \\
+    \hline 4 & \DTLfetch{results}{executable}{dynamic_li}{mean-time} & (\DTLfetch{results}{executable}{dynamic_li}{confidence-interval-start}, \DTLfetch{results}{executable}{dynamic_li}{confidence-interval-end})\\
+
+    \hline 5 & \DTLfetch{results}{executable}{static_lu}{mean-time} & (\DTLfetch{results}{executable}{static_lu}{confidence-interval-start}, \DTLfetch{results}{executable}{static_lu}{confidence-interval-end}) \\
+    \hline 6 & \DTLfetch{results}{executable}{dynamic_lu}{mean-time} & (\DTLfetch{results}{executable}{dynamic_lu}{confidence-interval-start}, \DTLfetch{results}{executable}{dynamic_lu}{confidence-interval-end})\\
+    \hline
+\end{tabular}
+\end{table}
+
+\subsection{Comparação dos eventos}
+Percebe-se que nos experimentos 2, 4 e 6, com alocação dinâmica, houve um aumento bastante perceptível de \textit{L1-dcache-loads-misses} comparado aos experimentos 1, 3 e 5, com alocação estática, que não deve ser surpresa, pois a região da \textit{stack} da memória deve ser mais compatível com as \textit{caches}. Além disso, quando mantemos o tipo de alocação constante, nota-se que a otimização de \textit{loop unrolling} tem um efeito de diminuição de tal evento.
+
+Nota-se que nos experimentos 3 e 4, com otimização \textit{loop interchange}, o número de \textit{L1-dcache-loads-misses} foi consideravlemnte mais alto em comparação com os experimentos que utilizaram outras otimizações com a mesma alocação. Ou seja, a alocação teve o maior efeito sobre tal evento, porém dentro do conjunto de experimentos com a mesma alocação, a otimização \textit{loop interchange} aumenta a ocorrência desses evntos, enquanto a otimização \textit{loop unrolling} as diminui.
+
+Nos experimentos 5 e 6, com otimização \textit{loop unrolling}, houve uma diminuição de \textit{L1-dcache-loads} e \textit{branch-instructions} em relação aos experimentos 1, 2, 3 e 4, que apresentaram valores similares entre si para esses eventos, também como esperado. Entretanto, o valor de \textit{branch-misses}, similar nos experimentos 1, 2, 3 e 4, aumenta quase 20\% nos experimentos 5 e 6.
+
+% A influência dos fatores mostra que, no caso geral, o uso de otimizações aumenta o número de \textit{branch-misses} e \textit{load-misses}, mas gera uma diminuição no número de instruções de \textit{branch}. Destaca-se também que no caso estático o número de \textit{load-misses} diminui consideravelmente usando a técnica de \textit{loop unrolling}, porém há um aumento no número de \textit{branch-misses}. O uso de alocação dinâmica aumenta o número de \textit{load-misses}, que não deve ser surpresa, pois a região da \textit{stack} da memória deve ser mais compatível com as \textit{caches}.
+
+\subsection{Influência dos fatores}
+Percebe-se que na análise 1 e 2, com variável resposta \textit{L1-dcache-loads} e \textit{L1-dcache-loads-misses}, o fator alocação teve muito mais influência do que o fator otimização. O oposto aconteceu para as análises 3 e 4, com variável resposta \textit{branch-instructions} e \textit{branch-misses}, onde a otimização teve muito mais influência que a alocação.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+    \hline \textbf{Análise} & \textbf{Alocação} & \textbf{Otimização} & \textbf{Combinada} \\ 
+    \hline 1 & \DTLfetch{factors}{Answer variable}{L1-dcache-loads}{Alocation influence} & \DTLfetch{factors}{Answer variable}{L1-dcache-loads}{Optimization influence} &  \DTLfetch{factors}{Answer variable}{L1-dcache-loads}{Combined influence}  \\
+    
+    \hline 2 & \DTLfetch{factors}{Answer variable}{L1-dcache-loads-misses}{Alocation influence} & \DTLfetch{factors}{Answer variable}{L1-dcache-loads-misses}{Optimization influence} &  \DTLfetch{factors}{Answer variable}{L1-dcache-loads-misses}{Combined influence}  \\
+    
+    \hline 3 & \DTLfetch{factors}{Answer variable}{branch-instructions}{Alocation influence} & \DTLfetch{factors}{Answer variable}{branch-instructions}{Optimization influence} &  \DTLfetch{factors}{Answer variable}{branch-instructions}{Combined influence}  \\
+    
+    \hline 4 & \DTLfetch{factors}{Answer variable}{branch-misses}{Alocation influence} & \DTLfetch{factors}{Answer variable}{branch-misses}{Optimization influence} &  \DTLfetch{factors}{Answer variable}{branch-misses}{Combined influence}  \\
+    \hline
+\end{tabular}
+\end{table}
